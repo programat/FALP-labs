@@ -1,61 +1,55 @@
 % family-tree.pl
 
 % Факты о членах семьи
-man(john).
-man(mike).
-man(jack).
-man(joe).
-man(bob).
-man(jim).
-man(tom).
-man(peter).
+man(voeneg).
+man(ratibor).
+man(boguslav).
+man(velerad).
+man(duhovlad).
+man(svyatoslav).
+man(dobrozhir).
+man(bogomil).
+man(zlatomir).
 
-woman(mary).
-woman(susan).
-woman(lisa).
-woman(emma).
-woman(anne).
-woman(aurora).
-woman(isabella).
-woman(kate).
+woman(goluba).
+woman(lubomila).
+woman(bratislava).
+woman(veslava).
+woman(zhdana).
+woman(bozhedara).
+woman(broneslava).
+woman(veselina).
+woman(zdislava).
 
-% Отношения "родитель"
-parent(john, mary).
-parent(john, anne).
-parent(isabella, mary).
-parent(isabella, anne).
+parent(voeneg,ratibor).
+parent(voeneg,bratislava).
+parent(voeneg,velerad).
+parent(voeneg,zhdana).
 
-parent(john, kate).
-parent(isabella, kate).
+parent(goluba,ratibor).
+parent(goluba,bratislava).
+parent(goluba,velerad).
+parent(goluba,zhdana).
 
-parent(mary, susan).
-parent(mary, lisa).
-parent(tom, susan).
-parent(tom, lisa).
+parent(ratibor,svyatoslav).
+parent(ratibor,dobrozhir).
+parent(lubomila,svyatoslav).
+parent(lubomila,dobrozhir).
 
-parent(mike, joe).
-parent(mike, jack).
-parent(anne, joe).
-parent(anne, jack).
+parent(boguslav,bogomil).
+parent(boguslav,bozhedara).
+parent(bratislava,bogomil).
+parent(bratislava,bozhedara).
 
-parent(joe, bob).
-parent(joe, jim).
-parent(aurora, bob).
-parent(aurora, jim).
+parent(velerad,broneslava).
+parent(velerad,veselina).
+parent(veslava,broneslava).
+parent(veslava,veselina).
 
-parent(lisa, emma).
-parent(peter, emma).
-
-
-%                   John & Isabella
-%                      /  |  \
-%                     /   |   \
-%           Tom & Mary  Kate   Anne & Mike
-%              / \                 | \
-%         Susan   Lisa & Peter  Jack  Joe & Aurora
-%                     /                 /  \
-%                   Emma              Bob   Jim
-
+parent(duhovlad,zdislava).
+parent(duhovlad,zlatomir).
+parent(zhdana,zdislava).
+parent(zhdana,zlatomir).
 
 % Педикат men
 men :- man(X), write(X), nl, fail.
@@ -88,7 +82,7 @@ b_s(X, Y) :- parent(P, X), parent(P, Y), X \= Y.
 b_s(X) :- b_s(X, Y), write(Y), nl.
 
 
-% 1.2.6
+% 2.6
 % Предикат daughter(X, Y):  X - дочь Y?
 daughter(X, Y) :- woman(X), parent(Y, X).
 % Предикат brother(X) для вывода дочери X
@@ -99,7 +93,7 @@ husband(X, Y) :- man(X), parent(X, C), parent(Y, C), X \= Y.
 % Предикат brother(X) для вывода мужа X
 husband(X) :- man(Y), parent(X, C), parent(Y, C), X \= Y, write(Y).
 
-% 1.3.6
+% 3.6
 % Предикат grand_ma(X, Y): X - бабушка Y?
 grand_ma(X, Y) :- parent(X, P), parent(P, Y), woman(X).
 % Предикат grand_ma1(X, Y): X - бабушка Y? с использованием готовых предиктатов

@@ -1,6 +1,6 @@
 % family-tree.pl
 
-% Факты о членах семьи
+% Family facts database
 man(voeneg).
 man(ratibor).
 man(boguslav).

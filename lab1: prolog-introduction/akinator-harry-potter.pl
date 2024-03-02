@@ -4,6 +4,7 @@
 % Entry point of the program that handles the recognition of a problem.
 % True if a character is successfully recognized and outputted, false otherwise.
 main :-
+    retractall(no_any_questions(_)),
     retractall(asked(_,_)),
     character(Character),
     !,
@@ -21,9 +22,9 @@ main :-
 % True if the user responds 'y' to the question for the given category.
 
 question(wizard, Response) :- query('Is the character a wizard or witch?', Response).
-question(not_negative, Response) :- query('Isn`t this a negative character?', Response).
-question(attended_hogwarts, Response) :- query('Did the character attend Hogwarts School of Witchcraft and Wizardry?', Response).
+question(not_negative, Response) :- query('Is this a non negative character?', Response).
 question(gryffindor, Response) :- query('Is the character a Gryffindor?', Response).
+question(attended_hogwarts, Response) :- query('Did the character attend Hogwarts School of Witchcraft and Wizardry?', Response).
 question(teacher, Response) :- query('Is the character was a teacher in Hogwarts?', Response).
 question(order_of_phoenix, Response) :- query('Is the character a member of the Second Order of the Phoenix?', Response).
 question(malfoy_family, Response) :- query('Is the character associated with the Malfoy family?', Response).
@@ -39,8 +40,8 @@ question(worked_for_voldemort, Response) :- query('Did the character work for Vo
 character(harry_potter) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, y),
     question(gryffindor, y),
+    question(attended_hogwarts, y),
     question(teacher, n),
     question(order_of_phoenix, y),
     question(malfoy_family, n),
@@ -50,8 +51,8 @@ character(harry_potter) :-
 character(hermione_granger) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, y),
     question(gryffindor, y),
+    question(attended_hogwarts, y),
     question(teacher, n),
     question(order_of_phoenix, y),
     question(malfoy_family, n),
@@ -61,8 +62,8 @@ character(hermione_granger) :-
 character(ron_weasley) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, y),
     question(gryffindor, y),
+    question(attended_hogwarts, y),
     question(teacher, n),
     question(order_of_phoenix, y),
     question(malfoy_family, n),
@@ -72,8 +73,8 @@ character(ron_weasley) :-
 character(albus_dumbledore) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, y),
     question(gryffindor, y),
+    question(attended_hogwarts, y),
     question(teacher, y),
     question(order_of_phoenix, y),
     question(malfoy_family, n),
@@ -83,8 +84,8 @@ character(albus_dumbledore) :-
 character(severus_snape) :-
     question(wizard, y),
     question(not_negative, n),
-    question(attended_hogwarts, y),
     question(gryffindor, n),
+    question(attended_hogwarts, y),
     question(teacher, y),
     question(order_of_phoenix, y),
     question(malfoy_family, n),
@@ -94,8 +95,8 @@ character(severus_snape) :-
 character(voldemort) :-
     question(wizard, y),
     question(not_negative, n),
-    question(attended_hogwarts, y),
     question(gryffindor, n),
+    question(attended_hogwarts, y),
     question(teacher, n),
     question(order_of_phoenix, n),
     question(malfoy_family, n),
@@ -105,8 +106,8 @@ character(voldemort) :-
 character(draco_malfoy) :-
     question(wizard, y),
     question(not_negative, n),
-    question(attended_hogwarts, y),
     question(gryffindor, n),
+    question(attended_hogwarts, y),
     question(teacher, n),
     question(order_of_phoenix, n),
     question(malfoy_family, y),
@@ -116,8 +117,8 @@ character(draco_malfoy) :-
 character(sirius_black) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, y),
     question(gryffindor, y),
+    question(attended_hogwarts, y),
     question(teacher, n),
     question(order_of_phoenix, y),
     question(malfoy_family, n),
@@ -127,8 +128,8 @@ character(sirius_black) :-
 character(luna_lovegood) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, y),
     question(gryffindor, n),
+    question(attended_hogwarts, y),
     question(teacher, n),
     question(order_of_phoenix, y),
     question(malfoy_family, n),
@@ -138,8 +139,8 @@ character(luna_lovegood) :-
 character(neville_longbottom) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, y),
     question(gryffindor, y),
+    question(attended_hogwarts, y),
     question(teacher, n),
     question(order_of_phoenix, y),
     question(malfoy_family, n),
@@ -149,8 +150,8 @@ character(neville_longbottom) :-
 character(minerva_mcgonagall) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, y),
     question(gryffindor, y),
+    question(attended_hogwarts, y),
     question(teacher, y),
     question(order_of_phoenix, y),
     question(malfoy_family, n),
@@ -160,8 +161,8 @@ character(minerva_mcgonagall) :-
 character(remus_lupin) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, y),
     question(gryffindor, y),
+    question(attended_hogwarts, y),
     question(teacher, y),
     question(order_of_phoenix, y),
     question(malfoy_family, n),
@@ -171,8 +172,8 @@ character(remus_lupin) :-
 character(dobby) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, n),
     question(gryffindor, n),
+    question(attended_hogwarts, n),
     question(teacher, n),
     question(order_of_phoenix, n),
     question(malfoy_family, y),
@@ -182,8 +183,8 @@ character(dobby) :-
 character(hagrid) :-
     question(wizard, y),
     question(not_negative, y),
+    question(gryffindor, y),
     question(attended_hogwarts, y),
-    question(gryffindor, yes),
     question(teacher, y),
     question(order_of_phoenix, n),
     question(malfoy_family, n),
@@ -193,8 +194,8 @@ character(hagrid) :-
 character(viktor_krum) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, n),
     question(gryffindor, n),
+    question(attended_hogwarts, n),
     question(teacher, n),
     question(order_of_phoenix, n),
     question(malfoy_family, n),
@@ -204,8 +205,8 @@ character(viktor_krum) :-
 character(draco_malfoy) :-
     question(wizard, y),
     question(not_negative, n),
-    question(attended_hogwarts, y),
     question(gryffindor, n),
+    question(attended_hogwarts, y),
     question(teacher, n),
     question(order_of_phoenix, n),
     question(malfoy_family, y),
@@ -215,8 +216,8 @@ character(draco_malfoy) :-
 character(lucius_malfoy) :-
     question(wizard, y),
     question(not_negative, n),
-    question(attended_hogwarts, y),
     question(gryffindor, n),
+    question(attended_hogwarts, y),
     question(teacher, n),
     question(order_of_phoenix, n),
     question(malfoy_family, y),
@@ -226,8 +227,8 @@ character(lucius_malfoy) :-
 character(vernon_dursley) :-
     question(wizard, n),
     question(not_negative, n),
-    question(attended_hogwarts, n),
     question(gryffindor, n),
+    question(attended_hogwarts, n),
     question(teacher, n),
     question(order_of_phoenix, n),
     question(malfoy_family, n),
@@ -237,8 +238,8 @@ character(vernon_dursley) :-
 character(mr_and_mrs_granger) :-
     question(wizard, n),
     question(not_negative, y),
-    question(attended_hogwarts, n),
     question(gryffindor, n),
+    question(attended_hogwarts, n),
     question(teacher, n),
     question(order_of_phoenix, n),
     question(malfoy_family, n),
@@ -248,12 +249,21 @@ character(mr_and_mrs_granger) :-
 character(lily_potter) :-
     question(wizard, y),
     question(not_negative, y),
-    question(attended_hogwarts, y),
     question(gryffindor, n),
+    question(attended_hogwarts, y),
     question(teacher, n),
     question(order_of_phoenix, y),
     question(malfoy_family, n),
     question(worked_for_voldemort, n).
+
+% Predicate common_characters/0
+% Checks if there are other characters in the database that satisfy the question.
+% If there are other characters, retract any previous 'no_any_questions' assertions.
+common_characters :-
+    (character(Character1), character(Character2), Character1 \== Character2) ->
+    retractall(no_any_questions(_)) % If there are other characters, retract any previous assertions of 'no_any_questions'.
+    ;
+    true.
 
 % Predicate query(+Prompt:atom, -Response:atom)
 % Queries the user with a yes/no prompt and returns their response.
@@ -262,9 +272,13 @@ character(lily_potter) :-
 %   - Response: The user's response ('y' for yes, 'n' for no).
 % True if the user's response matches the provided Response.
 query(Prompt, Response) :-
-    (   asked(Prompt, Reply) -> true
+    (   (asked(Prompt, Reply);
+        no_any_questions(_))-> true
     ;   nl, write(Prompt), write(' (y/n)? '),
         read(X),(X = y -> Reply = y ; Reply = n),
-	assert(asked(Prompt, Reply))
+        assert(no_any_questions(_)),
+	assert(asked(Prompt, Reply)),
+	common_characters
     ),
-    Reply = Response.
+    asked(Prompt, Reply) -> Reply=Response;
+    no_any_questions(_) -> true.

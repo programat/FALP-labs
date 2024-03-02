@@ -1,5 +1,17 @@
 % akinator-harry-potter.pl
 
+% Predicate main/0
+% Entry point of the program that handles the recognition of a problem.
+% True if a character is successfully recognized and outputted, false otherwise.
+main :-
+    retractall(asked(_,_)),
+    character(Character),
+    !,
+    nl,
+    write('The character is '), write(Character), write(.), nl.
+main :-
+    nl,
+    write('The character cannot be recognized.'), nl.
 
 % Predicate question(+Category:atom, -Response:atom)
 % Queries the user with a yes/no question related to the given category and returns their response.
@@ -242,3 +254,17 @@ character(lily_potter) :-
     question(order_of_phoenix, y),
     question(malfoy_family, n),
     question(worked_for_voldemort, n).
+
+% Predicate query(+Prompt:atom, -Response:atom)
+% Queries the user with a yes/no prompt and returns their response.
+% Parameters:
+%   - Prompt: The prompt to be displayed to the user.
+%   - Response: The user's response ('y' for yes, 'n' for no).
+% True if the user's response matches the provided Response.
+query(Prompt, Response) :-
+    (   asked(Prompt, Reply) -> true
+    ;   nl, write(Prompt), write(' (y/n)? '),
+        read(X),(X = y -> Reply = y ; Reply = n),
+	assert(asked(Prompt, Reply))
+    ),
+    Reply = Response.

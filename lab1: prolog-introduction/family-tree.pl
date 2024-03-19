@@ -71,8 +71,8 @@ children(Parent) :- parent(Parent, Child), write(Child), nl, fail.
 % True if Mother is the mother of Child.
 mother(Mother, Child) :- woman(Mother), parent(Mother, Child).
 
-% Predicate mother(+Child:atom)
-% Lists all mothers of Child.
+% Predicate mother(?Child:atom)
+% Lists mother of Child.
 mother(Child) :- woman(Mother), parent(Mother, Child), write(Mother), fail.
 
 % Predicate brother(+Brother:atom, +Sibling:atom)
@@ -124,7 +124,7 @@ grand_ma1(Grandma, Grandchild) :- mother(Grandma, Parent), parent(Parent, Grandc
 grand_mas(Grandchild) :- grand_ma(Grandma, Grandchild), write(Grandma), nl, fail.
 
 % Predicate grand_ma_and_da(+Grandparent:atom, +Grandchild:atom)
-% True if Grandparent is the grandmother or grandfather of Grandchild.
+% True if Grandparent is the grandmother or grandfather of Grandchild (can be used as grand_ma_and_da(Grandchild, Grandparent)).
 grand_ma_and_da(Grandparent, Grandchild) :- woman(Grandchild), (grand_ma(Grandparent, Grandchild); grand_ma(Grandchild, Grandparent)).
 
 % Predicate sister(+Sister:atom, +Sibling:atom)

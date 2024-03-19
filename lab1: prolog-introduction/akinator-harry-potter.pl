@@ -24,8 +24,8 @@ main :-
 question(wizard, Response) :- query('Is the character a wizard or witch?', Response).
 question(not_negative, Response) :- query('Is this a non negative character?', Response).
 question(attended_hogwarts, Response) :- query('Did the character attend Hogwarts School of Witchcraft and Wizardry?', Response).
-question(gryffindor, Response) :- query('Is the character a Gryffindor?', Response).
-question(teacher, Response) :- query('Is the character was a teacher in Hogwarts?', Response).
+question(gryffindor, Response) :- query('Is the character related to Gryffindor?', Response).
+question(teacher, Response) :- query('Is the character was a teacher?', Response).
 question(order_of_phoenix, Response) :- query('Is the character a member of the Second Order of the Phoenix?', Response).
 question(malfoy_family, Response) :- query('Is the character associated with the Malfoy family?', Response).
 question(worked_for_voldemort, Response) :- query('Did the character work for Voldemort?', Response).
@@ -139,7 +139,7 @@ character(luna_lovegood) :-
     question(attended_hogwarts, y),
     question(gryffindor, n),
     question(teacher, n),
-    question(order_of_phoenix, y),
+    question(order_of_phoenix, n),
     question(malfoy_family, n),
     question(worked_for_voldemort, n).
 

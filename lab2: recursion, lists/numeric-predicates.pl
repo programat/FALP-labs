@@ -9,9 +9,19 @@ max(X, Y, U, Z) :-
     U >= Y,
     Z = U.
 
+% max_for_normal_people(+X:number, +Y:number, +U:number, -Z:number)
+% True if Z is the maximum of X, Y, and U.
+max_for_normal_people(X, Y, U, U) :-
+    U >= X,
+    U >= Y, !.
+% Second clause: If Y is greater than or equal to X, Z is unified with Y.
+max_for_normal_people(X, Y, _, Y) :- Y >= X.
+% Third clause: If the previous clauses fail, Z is unified with X.
+max_for_normal_people(X, _, _, X).
+
 
 % fact_up(+N:integer, -X:integer)
-% Calculates the factorial of N using tail recursion.
+% Calculates the factorial of N using recursive ascent.
 % Base case: factorial of 0 is 1.
 fact_up(0, 1).
 
@@ -23,7 +33,7 @@ fact_up(N, X) :-
     X is N * X1.
 
 % fact_down(+N:integer, +Acc:integer, -X:integer)
-% Calculates the factorial of N using accumulator-based recursion.
+% Calculates the factorial of N using accumulator-based recursion (tail recursion).
 % Base case: if N is 0, unify X with the accumulator Acc.
 fact_down(0, X, X).
 
@@ -42,7 +52,7 @@ call_fact_down(N, X) :- fact_down(N, 1, X).
 
 
 % sum_digits_up(+N:integer, -S:integer)
-% Calculates the sum of digits of N using tail recursion.
+% Calculates the sum of digits of N using recursive ascent.
 % Base case: sum of digits of 0 is 0.
 sum_digits_up(0, 0).
 
@@ -56,7 +66,7 @@ sum_digits_up(N, S) :-
 
 
 % sum_digits_down(+N:integer, +Acc:integer, -S:integer)
-% Calculates the sum of digits of N using accumulator-based recursion.
+% Calculates the sum of digits of N using accumulator-based recursion (tail recursion).
 % Base case: if N is 0, unify S with the accumulator Acc.
 sum_digits_down(0, S, S).
 
@@ -96,3 +106,101 @@ has_square_factor(N, F) :-
         F1 is F + 1,
         has_square_factor(N, F1)
     ).
+
+
+% Task 2 ---
+
+% product_digits_up(+N:integer, -P:integer)
+% Calculates the product of digits of N using recursive ascent.
+% Base case: product of digits of 0 is 1.
+product_digits_up(0, 1).
+
+% Recursive case: product of digits of N > 0.
+product_digits_up(N, P) :-
+    N > 0,
+    D is N mod 10,
+    N1 is N div 10,
+    product_digits_up(N1, P1),
+    P is D * P1.
+
+% product_digits_down(+N:integer, +Acc:integer, -P:integer)
+% Calculates the product of digits of N using accumulator-based recursion (tail recursion).
+% Base case: if N is 0, unify P with the accumulator Acc.
+product_digits_down(0, P, P).
+
+% Recursive case: if N > 0, calculate the product of digits using the accumulator.
+product_digits_down(N, Acc, P) :-
+    N > 0,
+    D is N mod 10,
+    Acc1 is Acc * D,
+    N1 is N div 10,
+    product_digits_down(N1, Acc1, P).
+
+% product_digits(+N:integer, -P:integer)
+% Wrapper predicate to calculate the product of digits of N.
+% Calls product_digits_down/3 with initial accumulator value of 1.
+product_digits(N, P) :- product_digits_down(N, 1, P).
+
+
+% odd_gt3(+D:integer)
+% True if D is an odd number greater than 3.
+odd_gt3(D) :- D > 3, 1 is D mod 2.
+
+% count_odd_gt3_up(+N:integer, -C:integer)
+% Counts the number of odd digits greater than 3 in N using recursive ascent.
+% Base case: count is 0 if N is 0.
+count_odd_gt3_up(0, 0).
+
+% Recursive case: count odd digits greater than 3 in N.
+count_odd_gt3_up(N, C) :-
+    N > 0,
+    D is N mod 10,
+    N1 is N div 10,
+    count_odd_gt3_up(N1, C1),
+    (odd_gt3(D) -> C is C1 + 1 ; C = C1).
+
+% count_odd_gt3_down(+N:integer, +Acc:integer, -C:integer)
+% Counts the number of odd digits greater than 3 in N using accumulator-based recursion (tail recursion).
+% Base case: if N is 0, unify C with the accumulator Acc.
+count_odd_gt3_down(0, C, C).
+
+% Recursive case: if N > 0, count odd digits greater than 3 using the accumulator.
+count_odd_gt3_down(N, Acc, C) :-
+    N > 0,
+    D is N mod 10,
+    (odd_gt3(D) -> Acc1 is Acc + 1 ; Acc1 = Acc),
+    N1 is N div 10,
+    count_odd_gt3_down(N1, Acc1, C).
+
+% count_odd_gt3(+N:integer, -C:integer)
+% Wrapper predicate to count the number of odd digits greater than 3 in N.
+% Calls count_odd_gt3_down/3 with initial accumulator value of 0.
+count_odd_gt3(N, C) :- count_odd_gt3_down(N, 0, C).
+
+% gcd_up(+X:integer, +Y:integer, -G:integer)
+% Calculates the greatest common divisor (GCD) of X and Y using recursive ascent.
+% Base case: if Y is 0, the GCD is X (assuming X >= 0).
+gcd_up(X, 0, X) :- X >= 0.
+
+% Recursive case: calculate GCD using Euclid's algorithm.
+gcd_up(X, Y, G) :-
+    Y > 0,
+    R is X mod Y,
+    gcd_up(Y, R, G).
+
+% gcd_down(+X:integer, +Y:integer, +_:integer, -G:integer)
+% Calculates the GCD of X and Y using accumulator-based recursion (tail recursion).
+% Base case: if Y is 0, unify G with X (assuming X >= 0).
+gcd_down(X, 0, X, X) :- X >= 0.
+
+% Recursive case: calculate GCD using Euclid's algorithm.
+gcd_down(X, Y, _, G) :-
+    Y > 0,
+    R is X mod Y,
+    gcd_down(Y, R, Y, G).
+
+% gcd(+X:integer, +Y:integer, -G:integer)
+% Wrapper predicate to calculate the GCD of X and Y.
+% Calls gcd_down/4 with initial accumulator value of 0.
+gcd(X, Y, G) :- gcd_down(X, Y, 0, G).
+

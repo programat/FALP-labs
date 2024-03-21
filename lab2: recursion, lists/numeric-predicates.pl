@@ -247,10 +247,69 @@ write_result(Product) :-
     write('The product of divisors with digit sum less than the original number is: '),
     write(Product), nl.
 
-% lab8
+% task5
 % Main predicate that reads a number, calculates the product of divisors, and writes the result.
-lab8 :-
+task5 :-
     read_number(Number),
     divisor_product(Number, Product),
     write_result(Product).
 
+
+% Task 6 --- At first I thought that lists couldn’t be used, so I came up with a dynamic predicate :(
+
+% read_n_m(-N:integer, -M:integer)
+% Reads values for N and M from the user.
+read_n_m(N, M) :-
+    write('Enter n: '), read(N), nl,
+    write('Enter m: '), read(M).
+
+% Declare term_seen/1 as a dynamic predicate.
+:- dynamic term_seen/1.
+
+% distinct_powers(+N:integer, +M:integer, -Count:integer)
+% Counts the number of distinct terms of the form A^B where A is in the range [2, N] and B is in the range [2, M].
+distinct_powers(N, M, Count) :-
+    retractall(term_seen(_)),
+    distinct_powers(2, N, 2, M, 0, Count).
+
+% distinct_powers(+A:integer, +N:integer, +B:integer, +M:integer, +Acc:integer, -Count:integer)
+% Helper predicate for distinct_powers/3.
+% Base case: If A > N, the count is the accumulated value Acc.
+distinct_powers(A, N, _, _, Acc, Count) :-
+    A > N,
+    Count is Acc.
+
+% Recursive case: If A =< N, process the current term A^B.
+distinct_powers(A, N, B, M, Acc, Count) :-
+    A =< N,
+    (   B > M
+    ->
+        NextA is A + 1,
+        distinct_powers(NextA, N, 2, M, Acc, Count)
+    ;
+        P is A ** B,
+        (   term_hash(P, H),
+            \+ term_seen(H)
+        ->  % If the term has not been seen before, assert it and increment the count.
+            assertz(term_seen(H)),
+            NextAcc is Acc + 1
+        ;
+            NextAcc is Acc
+        ),
+        NextB is B + 1,
+        distinct_powers(A, N, NextB, M, NextAcc, Count)
+    ).
+
+% write_result_task6(+Count:integer)
+% Writes the result of task6.
+write_result_task6(Count) :-
+    write('The result of task6 is: '),
+    write(Count), nl.
+
+% task6
+% Main predicate for task6.
+% Reads N and M, counts the distinct terms, and writes the result.
+task6 :-
+    read_n_m(N, M),
+    distinct_powers(N, M, Count),
+    write_result_task6(Count).

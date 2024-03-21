@@ -204,3 +204,53 @@ gcd_down(X, Y, _, G) :-
 % Calls gcd_down/4 with initial accumulator value of 0.
 gcd(X, Y, G) :- gcd_down(X, Y, 0, G).
 
+
+% Task 5 ---
+
+% read_number(-Number:integer)
+% Prompts the user to enter a number and reads it.
+read_number(Number) :-
+    write('Enter a number: '),
+    read(Number).
+
+% divisor_product(+Number:integer, -Product:integer)
+% Calculates the product of divisors of Number whose digit sum is less than the digit sum of Number.
+divisor_product(Number, Product) :-
+    sum_digits(Number, DigitSum),
+    divisor_product_acc(Number, 1, Number, DigitSum, Product).
+
+% divisor_product_acc(+Divisor:integer, +Acc:integer, +Number:integer, +DigitSum:integer, -Product:integer)
+% Recursive helper predicate for divisor_product/2.
+% Base case: if Divisor is 1, unify Product with the accumulator Acc.
+divisor_product_acc(1, Acc, _, _, Acc).
+
+% Recursive case: check if Divisor divides Number and its digit sum is less than DigitSum.
+% If so, multiply Acc by Divisor to get the new accumulator value.
+divisor_product_acc(Divisor, Acc, Number, DigitSum, Product) :-
+    Divisor > 1,
+    (Number mod Divisor =:= 0 ->
+        sum_digits(Divisor, DivisorDigitSum),
+        (DivisorDigitSum < DigitSum ->
+            NewAcc is Acc * Divisor
+        ;
+            NewAcc = Acc
+        )
+    ;
+        NewAcc = Acc
+    ),
+    NextDivisor is Divisor - 1,
+    divisor_product_acc(NextDivisor, NewAcc, Number, DigitSum, Product).
+
+% write_result(+Product:integer)
+% Writes the result (product of divisors) to the console.
+write_result(Product) :-
+    write('The product of divisors with digit sum less than the original number is: '),
+    write(Product), nl.
+
+% lab8
+% Main predicate that reads a number, calculates the product of divisors, and writes the result.
+lab8 :-
+    read_number(Number),
+    divisor_product(Number, Product),
+    write_result(Product).
+

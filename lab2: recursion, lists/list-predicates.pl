@@ -68,3 +68,60 @@ remove_elements([H|T], Summ, Result) :-
         Result = [H|Result1]
     ).
 
+
+% Task 3 --- 1.7, 1.18, 1.27
+
+% 1.7
+% shift_right(+List:list, -Shifted:list)
+% Shifts the last two elements of List to the beginning of Shifted.
+shift_right(List, Shifted) :-
+    append(Left, Right, List),
+    length(Right, 2),
+    append(Right, Left, Shifted).
+
+% shift_right
+% Reads a list from the user, shifts the last two elements to the beginning, and writes the shifted list.
+shift_right :-
+    write('Enter the list (end with "q."): '), nl,
+    read_list(List),
+    shift_right(List, Shifted),
+    write('Shifted list: '), write_list(Shifted), nl.
+
+% 1.18
+% min_list(+List:list, -Min:number)
+% Finds the minimum element in List.
+min_list([Min], Min).
+min_list([H|T], Min) :-
+    min_list(T, MinT),
+    Min is min(H, MinT).
+
+% before_min(+List:list, -Before:list)
+% Finds the sublist of elements before the minimum element in List.
+before_min(List, Before) :-
+    min_list(List, Min),
+    append(Before, [Min|_], List).
+
+% before_min
+% Reads a list from the user, finds the list of elements before the minimum element, and writes the result.
+before_min:-
+    write('Enter the list (end with "q."): '), nl,
+    read_list(List),
+    before_min(List, Before),
+    write('List of elements before min: '), write_list(Before), nl.
+
+% 1.27
+% shift_left(+List:list, -Shifted:list)
+% Shifts the first element of List to the end of Shifted.
+shift_left(List, Shifted) :-
+    append(Left, Right, List),
+    length(Left, 1),
+    append(Right, Left, Shifted).
+
+% shift_left
+% Reads a list from the user, shifts the first element to the end, and writes the shifted list.
+shift_left :-
+    write('Enter the list (end with "q."): '), nl,
+    read_list(List),
+    shift_left(List, Shifted),
+    write('Shifted list: '), write_list(Shifted), nl.
+

@@ -108,7 +108,7 @@ has_square_factor(N, F) :-
     ).
 
 
-% Task 2 ---
+% Task 2.7 ---
 
 % product_digits_up(+N:integer, -P:integer)
 % Calculates the product of digits of N using recursive ascent.
@@ -205,7 +205,7 @@ gcd_down(X, Y, _, G) :-
 gcd(X, Y, G) :- gcd_down(X, Y, 0, G).
 
 
-% Task 5 ---
+% Task 5.7 ---
 
 % read_number(-Number:integer)
 % Prompts the user to enter a number and reads it.
@@ -255,7 +255,7 @@ task5 :-
     write_result(Product).
 
 
-% Task 6 --- At first I thought that lists couldn’t be used, so I came up with a dynamic predicate :(
+% Task 6.7 --- At first I thought that lists couldn’t be used, so I came up with a dynamic predicate :(
 
 % read_n_m(-N:integer, -M:integer)
 % Reads values for N and M from the user.

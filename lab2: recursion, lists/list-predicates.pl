@@ -125,3 +125,46 @@ shift_left :-
     shift_left(List, Shifted),
     write('Shifted list: '), write_list(Shifted), nl.
 
+
+% Task 4.7 ---
+
+% in_list(+List:list, +El:term)
+% True if El is a member of List.
+in_list([El|_], El).
+in_list([_|T], El) :- in_list(T, El).
+
+% write_hair_colour(+List:list, +Person:atom)
+% Writes the hair colour of Person based on the information in List.
+% Cuts the search after finding the first match.
+write_hair_colour(List, Person) :-
+    write(Person), write(": "),
+    in_list(List, [Person, Hair_colour]),
+    write(Hair_colour), nl,
+    !.
+
+% solve_riddle
+% Solves the riddle of matching friends with their hair colours.
+solve_riddle :-
+    % Define a list of three friends
+    Friends = [_, _, _],
+
+    % Ensure that Belokurov, Ryzhov, and Chernov are in the list of friends
+    in_list(Friends, [belokurov, _]),
+    in_list(Friends, [ryzhov, _]),
+    in_list(Friends, [chernov, _]),
+
+    % Ensure that blond, brunet, and redhead hair colours are in the list
+    in_list(Friends, [_, blond]),
+    in_list(Friends, [_, brunet]),
+    in_list(Friends, [_, redhead]),
+
+    % Specify the constraints:
+    not(in_list(Friends, [belokurov, blond])),
+    not(in_list(Friends, [ryzhov, redhead])),
+    not(in_list(Friends, [chernov, brunet])),
+
+    % Write the hair colour for each friend
+    write_hair_colour(Friends, belokurov),
+    write_hair_colour(Friends, ryzhov),
+    write_hair_colour(Friends, chernov), !.
+

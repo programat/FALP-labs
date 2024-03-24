@@ -144,7 +144,7 @@ write_hair_colour(List, Person) :-
 
 % solve_riddle
 % Solves the riddle of matching friends with their hair colours.
-solve_riddle :-
+solve_riddle_friends :-
     % Define a list of three friends
     Friends = [_, _, _],
 
@@ -168,3 +168,57 @@ solve_riddle :-
     write_hair_colour(Friends, ryzhov),
     write_hair_colour(Friends, chernov), !.
 
+
+% Task 8.7 ---
+
+% Two versions of the task due to incorrect data.
+% It is said that Francis is stronger than Herbert, and Herbert is stronger than Francis.
+% I may not have understood the assignment, but if there really is a typo,
+% I have added a version of the assignment with the correct data (Herbert is weaker than Francis).
+
+% before(+X:term, +Y:term, +List:list)
+% True if X appears before Y in List.
+before(X, Y, List) :-
+    nth0(IndexX, List, X),
+    nth0(IndexY, List, Y),
+    IndexX < IndexY.
+
+% solve_boxers_order_incorrect
+% Solves the order of boxers from weakest to strongest based on the given constraints (with incorrect data).
+solve_boxers_order_incorrect:-
+    Order = [_, _, _, _],
+    in_list(Order, herbert),
+    in_list(Order, francis),
+    in_list(Order, james),
+    in_list(Order, thomas),
+
+    % Specify the constraints:
+    before(thomas, herbert, Order),
+    before(thomas, francis, Order),
+    before(herbert, francis, Order),
+    before(herbert, james, Order),
+    % Francis is weaker than Herbert (incorrect constraint)
+    before(francis, herbert, Order),
+
+    write('The order of boxers from weakest to strongest: '),
+    write_list(Order), nl.
+
+% solve_boxers_order
+% Solves the order of boxers from weakest to strongest based on the given constraints (with correct data).
+solve_boxers_order:-
+    Order = [_, _, _, _],
+    in_list(Order, herbert),
+    in_list(Order, francis),
+    in_list(Order, james),
+    in_list(Order, thomas),
+
+    % Specify the constraints:
+    before(thomas, herbert, Order),
+    before(thomas, francis, Order),
+    before(herbert, francis, Order),
+    before(herbert, james, Order),
+    % Herbert is weaker than Francis (correct constraint)
+    before(herbert, francis, Order),
+
+    write('The order of boxers from weakest to strongest: '),
+    write_list(Order), nl.

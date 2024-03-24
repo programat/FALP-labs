@@ -169,6 +169,124 @@ solve_riddle_friends :-
     write_hair_colour(Friends, chernov), !.
 
 
+% Task 7
+
+% 1.37
+
+% find_indices(+List:list, -Indices:list, -Count:integer)
+% Finds the indices of elements in List that are less than their left neighbor.
+% Indices is the list of indices, and Count is the number of such elements.
+find_indices(List, Indices, Count) :-
+    find_indices(List, 1, [], Indices, 0, Count).
+
+% find_indices(+List:list, +Index:integer, +Acc:list, -Indices:list, +Count:integer, -FinalCount:integer)
+% Helper predicate for find_indices/3.
+find_indices([_], _, Acc, Acc, Count, Count).
+find_indices([X,Y|T], Index, Acc, Indices, Count, FinalCount) :-
+    (   Y < X
+    ->  NewAcc = [Index|Acc],
+        NewCount is Count + 1
+    ;   NewAcc = Acc,
+        NewCount = Count
+    ),
+    NextIndex is Index + 1,
+    find_indices([Y|T], NextIndex, NewAcc, Indices, NewCount, FinalCount).
+
+% find_indices
+% Reads a list from the user, finds the indices of elements less than their left neighbor,
+% and writes the indices and count.
+find_indices :-
+    write('Enter the list (end with "q."): '), nl,
+    read_list(List),
+    find_indices(List, Indices, Count),
+    write('Indices of elements less than their left neighbor: '), write_list(Indices), nl,
+    write('Count: '), write(Count), nl.
+
+% 1.46
+
+% split_list_negpos(+List:list, -Positives:list, -Negatives:list)
+% Splits List into Positives (including 0) and Negatives lists.
+split_list_negpos(List, Positives, Negatives) :-
+    split_list_negpos(List, [], [], Positives, Negatives).
+
+% split_list_negpos(+List:list, +Pos:list, +Neg:list, -Positives:list, -Negatives:list)
+% Helper predicate for split_list_negpos/3.
+split_list_negpos([], Pos, Neg, Pos, Neg).
+split_list_negpos([H|T], Pos, Neg, Positives, Negatives) :-
+    (   H >= 0
+    ->  append(Pos, [H], NewPos),
+        split_list_negpos(T, NewPos, Neg, Positives, Negatives)
+    ;   append(Neg, [H], NewNeg),
+        split_list_negpos(T, Pos, NewNeg, Positives, Negatives)
+    ).
+
+% split_list_negpos
+% Reads a list from the user, splits it into positive and negative elements, and writes the results.
+split_list_negpos :-
+    write('Enter the list (end with "q."): '), nl,
+    read_list(List),
+    split_list_negpos(List, Positives, Negatives),
+    write('Positive elements (inc. 0): '), write_list(Positives), nl,
+    write('Negative elements: '), write_list(Negatives), nl.
+
+% 1.49
+
+% is_prime(+N:integer)
+% True if N is a prime number.
+is_prime(2).
+is_prime(N) :- N > 2, N mod 2 =\= 0, \+ has_factor(N, 3).
+
+% has_factor(+N:integer, +F:integer)
+% True if N has a factor F.
+has_factor(N, F) :- F * F =< N, (N mod F =:= 0 ; NextF is F + 1, has_factor(N, NextF)).
+
+% prime_divisors(+N:integer, -Divisors:list)
+% Finds all prime divisors of N.
+prime_divisors(N, Divisors) :-
+    findall(D, (between(2, N, D), N mod D =:= 0, is_prime(D)), Divisors).
+
+% list_prime_divisors(+List:list, -Divisors:list)
+% Finds all unique prime divisors of numbers in List.
+list_prime_divisors(List, Divisors) :-
+    findall(D, (member(N, List), prime_divisors(N, Ds), member(D, Ds)), AllDivisors),
+    list_to_set(AllDivisors, Divisors).
+
+% list_prime_divisors
+% Reads a list of positive numbers from the user, finds all unique prime divisors, and writes the results.
+list_prime_divisors :-
+    write('Enter the list of positive numbers (end with "q."): '), nl,
+    read_list(List),
+    list_prime_divisors(List, Divisors),
+    write('Prime divisors: '), write_list(Divisors), nl.
+
+
+% 1.57
+
+% count_greater_than_sum(+List:list, -Count:integer)
+% Counts the number of elements in List that are greater than the sum of previous elements.
+count_greater_than_sum(List, Count) :-
+    count_greater_than_sum(List, 0, 0, Count).
+
+% count_greater_than_sum(+List:list, +Sum:integer, +Acc:integer, -Count:integer)
+% Helper predicate for count_greater_than_sum/2.
+count_greater_than_sum([], _, Count, Count).
+count_greater_than_sum([H|T], Sum, Acc, Count) :-
+    (   H > Sum
+    ->  NewAcc is Acc + 1
+    ;   NewAcc = Acc
+    ),
+    NewSum is Sum + H,
+    count_greater_than_sum(T, NewSum, NewAcc, Count).
+
+% count_greater_than_sum
+% Reads a list from the user, counts the number of elements greater than the sum of previous elements, and writes the result.
+count_greater_than_sum :-
+    write('Enter the list (end with "q."): '), nl,
+    read_list(List),
+    count_greater_than_sum(List, Count),
+    write('Count of elements greater than the sum of previous elements: '), write(Count), nl.
+
+
 % Task 8.7 ---
 
 % Two versions of the task due to incorrect data.
@@ -185,7 +303,7 @@ before(X, Y, List) :-
 
 % solve_boxers_order_incorrect
 % Solves the order of boxers from weakest to strongest based on the given constraints (with incorrect data).
-solve_boxers_order_incorrect:-
+solve_boxers_riddle_incorrect:-
     Order = [_, _, _, _],
     in_list(Order, herbert),
     in_list(Order, francis),
@@ -205,7 +323,7 @@ solve_boxers_order_incorrect:-
 
 % solve_boxers_order
 % Solves the order of boxers from weakest to strongest based on the given constraints (with correct data).
-solve_boxers_order:-
+solve_boxers_riddle_order:-
     Order = [_, _, _, _],
     in_list(Order, herbert),
     in_list(Order, francis),

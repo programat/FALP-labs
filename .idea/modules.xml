@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/FALP-labs.iml" filepath="$PROJECT_DIR$/.idea/FALP-labs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab3: combinatorics/java-combinatorics/java-combinatorics.iml" filepath="$PROJECT_DIR$/lab3: combinatorics/java-combinatorics/java-combinatorics.iml" />
     </modules>
   </component>
 </project>

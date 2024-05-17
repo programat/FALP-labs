@@ -19,11 +19,11 @@ write_list([H|T]) :-
         write_list(T)
     ).
 
-% sum_list_down(+List:list, -Summ:number)
+% sum_list_up(+List:list, -Summ:number)
 % Calculates the sum of elements in the list using recursive ascent.
-sum_list_down([], 0).
-sum_list_down([H|T], Summ) :-
-    sum_list_down(T, Summ1),
+sum_list_up([], 0).
+sum_list_up([H|T], Summ) :-
+    sum_list_up(T, Summ1),
     Summ is H + Summ1.
 
 % sum_list_program
@@ -31,20 +31,20 @@ sum_list_down([H|T], Summ) :-
 sum_list_program :-
     write('Enter the list (end with "q."): '), nl,
     read_list(List),
-    sum_list_down(List, Summ),
+    sum_list_up(List, Summ),
     write_list(List), nl,
     write('The sum of the list is: '), write(Summ), nl.
 
-% sum_list_up(+List:list, +Acc:number, -Summ:number)
+% sum_list_down(+List:list, +Acc:number, -Summ:number)
 % Calculates the sum of elements in the list using an accumulator-based recursion (tail recursion).
-sum_list_up([], Summ, Summ).
-sum_list_up([H|T], Acc, Summ) :-
+sum_list_down([], Summ, Summ).
+sum_list_down([H|T], Acc, Summ) :-
     Acc1 is H + Acc,
-    sum_list_up(T, Acc1, Summ).
+    sum_list_down(T, Acc1, Summ).
 
-% sum_list_up(+List:list, -Summ:number)
-% Wrapper predicate for sum_list_up/3 with initial accumulator value of 0.
-sum_list_up(List, Summ) :- sum_list_up(List, 0, Summ).
+% sum_list_down(+List:list, -Summ:number)
+% Wrapper predicate for sum_list_down/3 with initial accumulator value of 0.
+sum_list_down(List, Summ) :- sum_list_down(List, 0, Summ).
 
 % sum_digits(+N:integer, -Summ:integer)
 % Calculates the sum of digits of a non-negative integer N.
@@ -289,54 +289,31 @@ count_greater_than_sum :-
 
 % Task 8.7 ---
 
-% Two versions of the task due to incorrect data.
-% It is said that Francis is stronger than Herbert, and Herbert is stronger than Francis.
-% I may not have understood the assignment, but if there really is a typo,
-% I have added a version of the assignment with the correct data (Herbert is weaker than Francis).
+% select(+List:list, +Element:term, -Rest:list)
+% Selects Element from List, resulting in Rest.
+select([A|B], A, B).
+select([A|B], C, [A|D]) :- select(B, C, D).
 
-% before(+X:term, +Y:term, +List:list)
-% True if X appears before Y in List.
-before(X, Y, List) :-
-    nth0(IndexX, List, X),
-    nth0(IndexY, List, Y),
-    IndexX < IndexY.
+% cut(+Element:term, +Relations:list, -Result:list)
+% Cuts the relations list based on the given Element.
+cut(A, [[B,C|_]|D], [[C|_]|E]) :- A = B, !, cut(A, D, E).
+cut(A, [[_,B|_]|D], [[B|_]|E]) :- A = B, !, cut(A, D, E).
+cut(A, [B|C], [B|D]) :- cut(A, C, D).
+cut(_, [], []).
 
-% solve_boxers_order_incorrect
-% Solves the order of boxers from weakest to strongest based on the given constraints (with incorrect data).
-solve_boxers_riddle_incorrect:-
-    Order = [_, _, _, _],
-    in_list(Order, herbert),
-    in_list(Order, francis),
-    in_list(Order, james),
-    in_list(Order, thomas),
+% solve_boxers_riddle_order
+% Solves the boxers riddle by determining the order of boxers based on their relations.
+solve_boxers_riddle_order :-
+    Boxers = [tomas_herbert, herbert_frensis, frensis_james, james_tomas],
+    Relations = [[frensis, herbert, tomas], [herbert, tomas, frensis], [tomas, herbert, frensis], [james, herbert, frensis]],
+    mix(Boxers, Relations, Result),
+    write("Boxers: "), write(Boxers), nl,
+    write("Order: "), write(Result), nl.
 
-    % Specify the constraints:
-    before(thomas, herbert, Order),
-    before(thomas, francis, Order),
-    before(herbert, francis, Order),
-    before(herbert, james, Order),
-    % Francis is weaker than Herbert (incorrect constraint)
-    before(francis, herbert, Order),
-
-    write('The order of boxers from weakest to strongest: '),
-    write_list(Order), nl.
-
-% solve_boxers_order
-% Solves the order of boxers from weakest to strongest based on the given constraints (with correct data).
-solve_boxers_riddle_order:-
-    Order = [_, _, _, _],
-    in_list(Order, herbert),
-    in_list(Order, francis),
-    in_list(Order, james),
-    in_list(Order, thomas),
-
-    % Specify the constraints:
-    before(thomas, herbert, Order),
-    before(thomas, francis, Order),
-    before(herbert, francis, Order),
-    before(herbert, james, Order),
-    % Herbert is weaker than Francis (correct constraint)
-    before(herbert, francis, Order),
-
-    write('The order of boxers from weakest to strongest: '),
-    write_list(Order), nl.
+% mix(+Boxers:list, +Relations:list, -Result:list)
+% Mixes the boxers and their relations to determine the order.
+mix([], _, []).
+mix(Boxers, Relations, [Boxer|Result]) :-
+    select(Boxers, Boxer, RemainingBoxers),
+    cut(Boxer, Relations, RemainingRelations),
+    mix(RemainingBoxers, RemainingRelations, Result).

@@ -6,21 +6,21 @@ public class ArrangementsAndCombinations {
         char[] alphabet = {'a', 'b', 'c'};
         int k = 2;
 
-        System.out.println("Recursive permutations with repetition:");
-        generatePermutationsWithRepetition(alphabet, new char[k], 0, k);
+        System.out.println("Recursive arrangements with repetition:");
+        generateArrangementsWithRepetition(alphabet, new char[k], 0, k);
+
+        System.out.println("\nNon-recursive arrangements with repetition:");
+        generateArrangementsWithRepetitionNonRecursive(alphabet, k);
 
         System.out.println("\nRecursive combinations without repetition:");
         generateCombinationsWithoutRepetition(alphabet, new char[k], 0, 0, k);
-
-        System.out.println("\nNon-recursive permutations with repetition:");
-        generatePermutationsWithRepetitionNonRecursive(alphabet, k);
 
         System.out.println("\nNon-recursive combinations without repetition:");
         generateCombinationsWithoutRepetitionNonRecursive(alphabet, k);
     }
 
     // Recursive function for permutations with repetition
-    public static void generatePermutationsWithRepetition(char[] alphabet, char[] result, int depth, int k) {
+    public static void generateArrangementsWithRepetition(char[] alphabet, char[] result, int depth, int k) {
         if (depth == k) {
             System.out.println(Arrays.toString(result));
             return;
@@ -28,7 +28,7 @@ public class ArrangementsAndCombinations {
 
         for (char c : alphabet) {
             result[depth] = c;
-            generatePermutationsWithRepetition(alphabet, result, depth + 1, k);
+            generateArrangementsWithRepetition(alphabet, result, depth + 1, k);
         }
     }
 
@@ -46,7 +46,7 @@ public class ArrangementsAndCombinations {
     }
 
     // Non-recursive function for permutations with repetition
-    public static void generatePermutationsWithRepetitionNonRecursive(char[] alphabet, int k) {
+    public static void generateArrangementsWithRepetitionNonRecursive(char[] alphabet, int k) {
         int n = alphabet.length;
         int[] indices = new int[k];
         while (true) {

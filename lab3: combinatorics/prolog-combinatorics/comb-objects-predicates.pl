@@ -1,4 +1,4 @@
-% comb-objects-prolog.pl
+% comb-objects-predicates.pl
 
 % generate_arrangements_with_repetition(+K:integer, +Alphabet:list, -Arrangement:list)
 % Generates arrangements with repetition of length K from the given Alphabet.

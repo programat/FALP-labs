@@ -1,0 +1,3 @@
+123 productOfDigits
+56789 countOddDigitsGreaterThanThree
+54 24 gcd

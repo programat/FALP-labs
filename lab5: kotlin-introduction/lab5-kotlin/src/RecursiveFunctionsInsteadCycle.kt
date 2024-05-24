@@ -31,18 +31,44 @@ class RecursiveFunctionsInsteadCycle {
     // Helper function to calculate the greatest common divisor in a downward manner
     fun gcd_down(a: Int, b: Int): Int = gcd_tail(a, b)
 
+    // Функция высшего порядка для обработки цифр числа
+    fun processDigits(n: Int, initial: Int, operation: (Int, Int) -> Int): Int {
+        return if (n < 10) operation(n, initial) else processDigits(n / 10, operation(n % 10, initial), operation)
+    }
+
+    // Функция высшего порядка для обработки двух чисел
+    fun processTwoNumbers(a: Int, b: Int, operation: (Int, Int) -> Int): Int {
+        return operation(a, b)
+    }
+
+    // Функция для вычисления произведения цифр числа
+    fun productOfDigits(n: Int): Int {
+        return processDigits(n, 1) { digit, acc -> digit * acc }
+    }
+
+    // Функция для подсчета количества нечетных цифр, больших 3
+    fun countOddDigitsGreaterThanThree(n: Int): Int {
+        return processDigits(n, 0) { digit, acc -> if (digit > 3 && digit % 2 != 0) acc + 1 else acc }
+    }
+
+    // Функция для вычисления НОД двух чисел
+    fun gcd(a: Int, b: Int): Int {
+        return processTwoNumbers(a, b) { x, y -> if (y == 0) x else gcd(y, x % y) }
+    }
+
+
     fun main(args: Array<String>) {
         val sc = Scanner(`in`)
         print("Enter a number: ")
         val n = sc.nextInt()
-        println("Product of digits: ${productOfDigits_down(n)}")
+        println("Product of digits: ${productOfDigits(n)}")
         print("Enter a number: ")
         val number = sc.nextInt()
-        println("Number of odd digits greater than 3: ${countOddDigitsGreaterThanThree_down(number)}")
+        println("Number of odd digits greater than 3: ${countOddDigitsGreaterThanThree(number)}")
         print("Enter two numbers: ")
         val a = sc.nextInt()
         val b = sc.nextInt()
-        println("GCD of $a and $b: ${gcd_down(a, b)}")
+        println("GCD of $a and $b: ${gcd(a, b)}")
     }
 }
 

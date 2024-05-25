@@ -1,8 +1,9 @@
-import com.sun.tools.javac.Main
 import java.lang.System.`in`
 import java.util.*
 
 class RecursiveFunctions {
+
+    // task 1 ---
     // Function to find the maximum of three numbers
     fun max(x: Int, y: Int, z: Int): Int = if (x > y) if (x > z) x else z else if (y > z) y else z
 
@@ -11,16 +12,14 @@ class RecursiveFunctions {
 
     // Tail recursive function to calculate factorial
     tailrec fun fact_tail(n: Int, acc: Int = 1): Int = if (n < 2) n * acc else fact_tail(n - 1, n * acc)
-    // Function to calculate factorial in a downward manner
-    fun fact_down(n: Int): Int = fact_tail(n, 1)
+    fun fact_down(n: Int): Int = fact_tail(n, 1) // 1-argument helper function
 
     // Function to calculate sum of digits in an upward manner
     fun sum_digits_up(n: Int): Int = if (n < 10) n else sum_digits_up(n / 10) + n % 10
 
     // Tail recursive function to calculate sum of digits
     tailrec fun sum_digits_tail(n: Int, acc: Int): Int = if (n < 10) n + acc else sum_digits_tail(n / 10, n % 10 + acc)
-    // Function to calculate sum of digits in a downward manner
-    fun sum_digits_down(n: Int): Int = sum_digits_tail(n, 0)
+    fun sum_digits_down(n: Int): Int = sum_digits_tail(n, 0) // 1-argument helper function
 
     // Function to call either sum_digits_down or fact_down based on the boolean value
     fun call_fun(f: Boolean): (Int) -> Int = if (f) ::sum_digits_down else ::fact_down

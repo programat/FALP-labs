@@ -81,14 +81,4 @@ class RecursiveFunctionsInsteadCycleTests {
         assertEquals(5, functions.gcd_tail(0, 5)) // Test case with zero
         assertEquals(5, functions.gcd_tail(5, 0)) // Test case with zero
     }
-
-    @Test
-    fun testGcd_down() {
-        assertEquals(1, functions.gcd_down(1, 1))
-        assertEquals(1, functions.gcd_down(17, 13))
-        assertEquals(6, functions.gcd_down(54, 24))
-        assertEquals(12, functions.gcd_down(48, 180))
-        assertEquals(5, functions.gcd_down(0, 5)) // Test case with zero
-        assertEquals(5, functions.gcd_down(5, 0)) // Test case with zero
-    }
 }

@@ -3,7 +3,7 @@ import java.io.IOException
 
 class Task6FileFuncs {
 
-    private val functionsProject = RecursiveFunctionsProject()
+    private val functionsProject = RecursiveFunctionsInsteadCycle()
 
     // Function to get a function by its name
     fun getFunctionByName(name: String): (Int) -> Int? {

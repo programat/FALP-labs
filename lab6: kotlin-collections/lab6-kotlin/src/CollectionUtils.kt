@@ -1,4 +1,5 @@
 class CollectionUtils {
+    // task 2 ---
     fun countSquares(list: List<Int>): Int =
         list.count { element ->
             list.any { it * it == element }

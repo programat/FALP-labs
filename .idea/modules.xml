@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/FALP-labs.iml" filepath="$PROJECT_DIR$/.idea/FALP-labs.iml" />
       <module fileurl="file://$PROJECT_DIR$/lab3: combinatorics/java-combinatorics/java-combinatorics.iml" filepath="$PROJECT_DIR$/lab3: combinatorics/java-combinatorics/java-combinatorics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab5: kotlin-introduction/lab5-kotlin/lab5-kotlin.iml" filepath="$PROJECT_DIR$/lab5: kotlin-introduction/lab5-kotlin/lab5-kotlin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab6: kotlin-collections/lab6-kotlin/lab6-kotlin.iml" filepath="$PROJECT_DIR$/lab6: kotlin-collections/lab6-kotlin/lab6-kotlin.iml" />
     </modules>
   </component>
 </project>

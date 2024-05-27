@@ -2,3 +2,6 @@ out
 
 test.py
 lab3: combinatorics/prolog-combinatorics/test.pl
+
+test_input.txt
+test_output.txt

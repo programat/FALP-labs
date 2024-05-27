@@ -1,4 +1,4 @@
-% Example graph for task 1
+% Example graph for task 7.1
 edge(a, b).
 edge(b, c).
 edge(c, d).
@@ -6,26 +6,26 @@ edge(d, e).
 edge(a, c).
 edge(c, a).
 
-% Example graph for task 2
+% Example graph for task 7.2
 edge_undirected(a, b).
 edge_undirected(b, c).
 edge_undirected(c, d).
 edge_undirected(d, e).
 edge_undirected(a, c).
 
-% Example graph for task 3
+% Example graph for task 7.3
 edge_directed(a, b).
 edge_directed(b, c).
 edge_directed(c, d).
 edge_directed(a, d).
 
-% Example graph for task 4
+% Example graph for task 7.4
 edge_tree(a, b).
 edge_tree(b, c).
 edge_tree(c, d).
 edge_tree(d, e).
 
-% Example graph for task 5
+% Example graph for task 7.5
 edge_weighted(a, b, 1).
 edge_weighted(b, c, 2).
 edge_weighted(c, d, 3).
@@ -169,7 +169,7 @@ update_distance(V, NewD, [distance(V, _)|Distances], [distance(V, NewD)|NewDista
 update_distance(V, NewD, [D|Distances], [D|NewDistances]) :-
     update_distance(V, NewD, Distances, NewDistances).
 
-% Example queries:
+% task 7 example queries:
 % Количество путей длины 3
 % ?- count_paths_length_n(a, d, 3, Count).
 
@@ -184,3 +184,124 @@ update_distance(V, NewD, [D|Distances], [D|NewDistances]) :-
 
 % Алгоритм Беллмана-Форда
 % ?- bellman_ford([a, b, c, d, e], a, Distances).
+
+
+% task 8
+
+% run_all
+% Unified predicate to call all necessary predicates and display their results.
+run_all :-
+    write('Задание 1: Получить все возможные помеченные неориентированные (p,q) графы'), nl,
+    labeled_graphs(3, 2, Graphs1),
+    write_labeled_graphs(Graphs1), nl, nl,
+
+    write('Задание 2: Получить все возможные помеченные неориентированные графы порядка p'), nl,
+    labeled_graphs_order(3, Graphs2),
+    write_labeled_graphs_order(Graphs2), nl, nl,
+
+    write('Задание 3: Построить все эйлеровы графы из 8 вершин и 12 ребер'), nl,
+    eulerian_graphs(Graphs3),
+    write_eulerian_graphs(Graphs3), nl.
+
+% labeled_graphs(+P:integer, +Q:integer, -Graphs:list)
+% Generates all possible labeled undirected (p,q) graphs.
+labeled_graphs(P, Q, Graphs) :-
+    findall(V, between(1, P, V), Vertices),
+    findall(E, (member(V1, Vertices), member(V2, Vertices), V1 < V2), Edges),
+    subset(Edges, Q, Subset),
+    Graphs = [graph(Vertices, Subset)].
+
+% subset(+List:list, +Q:integer, -Subset:list)
+% Generates all subsets of a given size Q from the list.
+subset([], 0, []).
+subset([H|T], Q, [H|Subset]) :-
+    Q > 0,
+    Q1 is Q - 1,
+    subset(T, Q1, Subset).
+subset([_|T], Q, Subset) :-
+    Q >= 0,
+    subset(T, Q, Subset).
+
+% labeled_graphs_order(+P:integer, -Graphs:list)
+% Generates all possible labeled undirected graphs of order P.
+labeled_graphs_order(P, Graphs) :-
+    findall(V, between(1, P, V), Vertices),
+    findall(E, (member(V1, Vertices), member(V2, Vertices), V1 < V2), Edges),
+    subsets(Edges, Subsets),
+    maplist(graph_edges(Vertices), Subsets, Graphs).
+
+% subsets(+List:list, -Subsets:list)
+% Generates all subsets of a given list.
+subsets([], [[]]).
+subsets([H|T], Subsets) :-
+    subsets(T, SubsetsT),
+    maplist(add_element(H), SubsetsT, SubsetsH),
+    append(SubsetsT, SubsetsH, Subsets).
+
+% add_element(+Element:term, +List:list, -NewList:list)
+% Adds an element to the front of a list.
+add_element(X, S, [X|S]).
+
+% graph_edges(+Vertices:list, +Edges:list, -Graph:term)
+% Creates a graph from vertices and edges.
+graph_edges(Vertices, Edges, graph(Vertices, Edges)).
+
+% eulerian_graphs(-Graphs:list)
+% Generates all Eulerian graphs with 8 vertices and 12 edges.
+eulerian_graphs(Graphs) :-
+    Vertices = [1, 2, 3, 4, 5, 6, 7, 8],
+    findall(E, (member(V1, Vertices), member(V2, Vertices), V1 < V2), Edges),
+    findall(Graph, (subset(Edges, 12, Subset), is_eulerian(Vertices, Subset), Graph = graph(Vertices, Subset)), Graphs).
+
+% is_eulerian(+Vertices:list, +Edges:list)
+% Checks if a graph is Eulerian.
+is_eulerian(Vertices, Edges) :-
+    connected(Vertices, Edges),
+    maplist(even_degree(Edges), Vertices).
+
+% connected(+Vertices:list, +Edges:list)
+% Checks if a graph is connected.
+connected(Vertices, Edges) :-
+    member(V, Vertices),
+    reachable(V, Vertices, Edges, Visited),
+    length(Visited, N),
+    length(Vertices, N).
+
+% reachable(+Vertex:term, +Vertices:list, +Edges:list, -Visited:list)
+% Checks if all vertices are reachable from a given vertex.
+reachable(_, [], _, []).
+reachable(V, [V|Vs], Edges, [V|Visited]) :-
+    reachable(V, Vs, Edges, Visited).
+reachable(V, [W|Vs], Edges, Visited) :-
+    member(edge(V, W), Edges),
+    \+ member(W, Visited),
+    reachable(W, Vs, Edges, Visited).
+
+% even_degree(+Edges:list, +Vertex:term)
+% Checks if a vertex has an even degree.
+even_degree(Edges, V) :-
+    findall(W, (member(edge(V, W), Edges); member(edge(W, V), Edges)), Neighbors),
+    length(Neighbors, Degree),
+    0 is Degree mod 2.
+
+% write_labeled_graphs(+Graphs:list)
+% Writes labeled undirected (p,q) graphs.
+write_labeled_graphs([]).
+write_labeled_graphs([graph(Vertices, Edges)|Graphs]) :-
+    write('Граф: '), write(Vertices), write(', '), write(Edges), nl,
+    write_labeled_graphs(Graphs).
+
+% write_labeled_graphs_order(+Graphs:list)
+% Writes labeled undirected graphs of order p.
+write_labeled_graphs_order([]).
+write_labeled_graphs_order([graph(Vertices, Edges)|Graphs]) :-
+    write('Граф: '), write(Vertices), write(', '), write(Edges), nl,
+    write_labeled_graphs_order(Graphs).
+
+% write_eulerian_graphs(+Graphs:list)
+% Writes Eulerian graphs.
+write_eulerian_graphs([]).
+write_eulerian_graphs([graph(Vertices, Edges)|Graphs]) :-
+    write('Эйлеров граф: '), write(Vertices), write(', '), write(Edges), nl,
+    write_eulerian_graphs(Graphs).
+

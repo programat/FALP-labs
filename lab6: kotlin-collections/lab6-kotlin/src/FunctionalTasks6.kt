@@ -1,4 +1,4 @@
-class FunctionalTasks {
+class FunctionalTasks6 {
 
     // 1.37 Given an integer array. Print the indices of elements that are less than their left neighbor, and the count of such numbers.
     fun indicesOfElementsLessThanLeftNeighbor(array: List<Int>): Pair<List<Int>, Int> {
@@ -36,7 +36,7 @@ class FunctionalTasks {
 }
 
 fun main() {
-    val tasks = FunctionalTasks()
+    val tasks = FunctionalTasks6()
 
     val array1 = listOf(3, 1, 4, 1, 5, 9, 2, 6, 5)
     val (indices, count) = tasks.indicesOfElementsLessThanLeftNeighbor(array1)

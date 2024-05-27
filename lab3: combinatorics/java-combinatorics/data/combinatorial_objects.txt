@@ -60,6 +60,15 @@ Recursive arrangements without repetition:
 [e, d, b]
 [e, d, c]
 
+Non-recursive arrangements without repetition:
+[a, a, a]
+[a, a, b]
+[a, b, a]
+[b, a, a]
+[b, b, a]
+[c, a, a]
+[c, b, a]
+
 Recursive permutations:
 [a, b, c, d, e]
 [a, b, c, e, d]
@@ -181,15 +190,6 @@ Recursive permutations:
 [e, d, b, c, a]
 [e, d, c, a, b]
 [e, d, c, b, a]
-
-Non-recursive arrangements without repetition:
-[a, a, a]
-[a, a, b]
-[a, b, a]
-[b, a, a]
-[b, b, a]
-[c, a, a]
-[c, b, a]
 
 Non-recursive permutations:
 [a, a, a, a, a]
@@ -314,7 +314,31 @@ Non-recursive permutations:
 [e, d, c, a, a]
 [e, d, c, b, a]
 
-Words of length 5 with exactly 2 'a's, others non-repeating:
+Recursive combinations without repetition:
+[a, b, c]
+[a, b, d]
+[a, b, e]
+[a, c, d]
+[a, c, e]
+[a, d, e]
+[b, c, d]
+[b, c, e]
+[b, d, e]
+[c, d, e]
+
+Non-recursive combinations without repetition:
+[a, b, c]
+[a, b, d]
+[a, b, e]
+[a, c, d]
+[a, c, e]
+[a, d, e]
+[b, c, d]
+[b, c, e]
+[b, d, e]
+[c, d, e]
+
+Words with exactly two 'a's:
 [a, a, b, c, d]
 [a, a, b, c, e]
 [a, a, b, d, c]
@@ -340,7 +364,7 @@ Words of length 5 with exactly 2 'a's, others non-repeating:
 [a, a, e, d, b]
 [a, a, e, d, c]
 
-Words of length 6 with exactly 2 letters repeating twice, others non-repeating:
+Words with exactly two letters repeating twice:
 [a, a, b, b, c, d]
 [a, a, b, b, c, e]
 [a, a, b, b, d, c]
@@ -401,3 +425,4 @@ Words of length 6 with exactly 2 letters repeating twice, others non-repeating:
 [d, d, e, e, b, c]
 [d, d, e, e, c, a]
 [d, d, e, e, c, b]
+

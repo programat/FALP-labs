@@ -1,0 +1,74 @@
+@startuml
+package combinatorics {
+    interface CombinatorialObject {
+        +generate(FileWriter writer) : void
+    }
+
+    abstract class Arrangement {
+        -char[] alphabet
+        -int length
+        +Arrangement(char[] alphabet, int length)
+    }
+
+    abstract class Combination {
+        -char[] alphabet
+        -int length
+        +Combination(char[] alphabet, int length)
+    }
+
+    abstract class Word {
+        -char[] alphabet
+        +Word(char[] alphabet)
+    }
+
+    class RecursiveArrangementWithoutRepetition {
+        +generate(FileWriter writer) : void
+        -generateArrangementsWithoutRepetition(char[] result, int depth, FileWriter writer) : void
+    }
+
+    class NonRecursiveArrangementWithoutRepetition {
+        +generate(FileWriter writer) : void
+    }
+
+    class RecursivePermutation {
+        +generate(FileWriter writer) : void
+        -generatePermutations(char[] result, boolean[] used, int depth, FileWriter writer) : void
+    }
+
+    class NonRecursivePermutation {
+        +generate(FileWriter writer) : void
+    }
+
+    class RecursiveCombinationWithoutRepetition {
+        +generate(FileWriter writer) : void
+        -generateCombinationsWithoutRepetition(char[] result, int start, int depth, FileWriter writer) : void
+    }
+
+    class NonRecursiveCombinationWithoutRepetition {
+        +generate(FileWriter writer) : void
+    }
+
+    class WordsWithTwoAs {
+        +generate(FileWriter writer) : void
+    }
+
+    class WordsWithTwoRepeatingLetters {
+        +generate(FileWriter writer) : void
+    }
+
+    CombinatorialObject <|.. Arrangement
+    CombinatorialObject <|.. Combination
+    CombinatorialObject <|.. Word
+
+    Arrangement <|-- RecursiveArrangementWithoutRepetition
+    Arrangement <|-- NonRecursiveArrangementWithoutRepetition
+    Arrangement <|-- RecursivePermutation
+    Arrangement <|-- NonRecursivePermutation
+
+    Combination <|-- RecursiveCombinationWithoutRepetition
+    Combination <|-- NonRecursiveCombinationWithoutRepetition
+
+    Word <|-- WordsWithTwoAs
+    Word <|-- WordsWithTwoRepeatingLetters
+}
+@enduml

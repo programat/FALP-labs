@@ -1,70 +1,41 @@
-data class TreeNode(val value: String, var left: TreeNode? = null, var right: TreeNode? = null)
+data class TreeNode(val value: String, val left: TreeNode? = null, val right: TreeNode? = null)
 
-class BinaryTree {
-    var root: TreeNode? = null
-
-    fun insert(value: String, comparator: (String, String) -> Int) {
-        root = insertRec(root, value, comparator)
-    }
-
-    private fun insertRec(node: TreeNode?, value: String, comparator: (String, String) -> Int): TreeNode {
-        if (node == null) {
-            return TreeNode(value)
-        }
-        if (comparator(value, node.value) < 0) {
-            node.left = insertRec(node.left, value, comparator)
+fun insertRec(node: TreeNode?, value: String, comparator: (String, String) -> Int): TreeNode =
+    node?.let {
+        if (comparator(value, it.value) < 0) {
+            it.copy(left = insertRec(it.left, value, comparator))
         } else {
-            node.right = insertRec(node.right, value, comparator)
+            it.copy(right = insertRec(it.right, value, comparator))
         }
-        return node
-    }
+    } ?: TreeNode(value)
 
-    fun toSortedList(): List<String> {
-        val result = mutableListOf<String>()
-        inOrderTraversal(root, result)
-        return result
-    }
+fun toSortedList(node: TreeNode?): List<String> =
+    node?.let {
+        toSortedList(it.left) + it.value + toSortedList(it.right)
+    } ?: emptyList()
 
-    private fun inOrderTraversal(node: TreeNode?, result: MutableList<String>) {
-        if (node != null) {
-            inOrderTraversal(node.left, result)
-            result.add(node.value)
-            inOrderTraversal(node.right, result)
-        }
-    }
+fun printTreeRec(node: TreeNode?, prefix: String = "", isLeft: Boolean = true): String =
+    node?.let {
+        val right = printTreeRec(it.right, "$prefix${if (isLeft) "│   " else "    "}", false)
+        val value = "$prefix${if (isLeft) "└── " else "┌── "}${it.value}\n"
+        val left = printTreeRec(it.left, "$prefix${if (isLeft) "    " else "│   "}", true)
+        right + value + left
+    } ?: ""
 
-    fun printTree() {
-        printTreeRec(root, "", true)
-    }
+fun listToBinaryTree(list: List<String>, comparator: (String, String) -> Int): TreeNode? =
+    list.fold(null as TreeNode?) { acc, value -> insertRec(acc, value, comparator) }
 
-    private fun printTreeRec(node: TreeNode?, prefix: String, isLeft: Boolean) {
-        if (node != null) {
-            printTreeRec(node.right, "$prefix${if (isLeft) "│   " else "    "}", false)
-            println("$prefix${if (isLeft) "└── " else "┌── "}${node.value}")
-            printTreeRec(node.left, "$prefix${if (isLeft) "    " else "│   "}", true)
-        }
-    }
-}
-
-fun listToBinaryTree(list: List<String>, comparator: (String, String) -> Int): BinaryTree {
-    val tree = BinaryTree()
-    list.forEach { tree.insert(it, comparator) }
-    return tree
-}
-
-fun binaryTreeToList(tree: BinaryTree): List<String> {
-    return tree.toSortedList()
-}
+fun binaryTreeToList(tree: TreeNode?): List<String> = toSortedList(tree)
 
 fun main() {
-    val strings = listOf("apple", "elderberry", "cherry",  "banana", "date", "fig", "grape")
+    val strings = listOf("apple", "elderberry", "cherry", "banana", "date", "fig", "grape")
 
     // Example of sorting alphabetically
     val tree = listToBinaryTree(strings) { a, b -> a.compareTo(b) }
     val sortedList = binaryTreeToList(tree)
     println("Sorted list alphabetically: $sortedList")
     println("Tree alphabetically:")
-    tree.printTree()
+    println(printTreeRec(tree))
 
     // Example of sorting by word count
     val stringsWithWords = listOf("apple pie", "banana split", "cherry tart", "date cake", "elderberry jam", "fig pudding", "grape jelly")
@@ -72,5 +43,5 @@ fun main() {
     val sortedListByWordCount = binaryTreeToList(treeByWordCount)
     println("Sorted list by word count: $sortedListByWordCount")
     println("Tree by word count:")
-    treeByWordCount.printTree()
+    println(printTreeRec(treeByWordCount))
 }
